@@ -34,13 +34,14 @@ public class SellerDAOJDBC implements SellerDAO {
 
     @Override
     public Seller findById(int id) {
+
         ResultSet rs = null;
 
         try (PreparedStatement selectStmt = connection.prepareStatement(
                 "SELECT seller.*, department.Name AS DepName " +
-                        "FROM seller" +
-                        "INNER JOIN department" +
-                        "ON seller.DepartmentId = department.Id" +
+                        "FROM seller " +
+                        "INNER JOIN department " +
+                        "ON seller.DepartmentId = department.Id " +
                         "WHERE seller.Id = ?"
         )
         ){
