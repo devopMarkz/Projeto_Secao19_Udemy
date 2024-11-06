@@ -58,10 +58,9 @@ public class SellerDAOJDBC implements SellerDAO {
                         .baseSalary(rs.getDouble("seller.BaseSalary"))
                         .department(department)
                         .build();
-            }
-            return null;
+            } else throw new SQLException();
         } catch (SQLException e) {
-            throw new DbException("Erro ao tentar acessar dados do usuário de ID " + id + ". Caused By: " + e.getMessage());
+            throw new DbException("Erro ao tentar acessar dados do usuário de ID " + id + ". Caused By: Usuário inexistente.");
         } finally {
             DB.closeResultSet(rs);
         }
