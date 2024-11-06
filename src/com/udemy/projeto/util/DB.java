@@ -4,9 +4,7 @@ import com.udemy.projeto.exception.DbException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class DB {
@@ -34,6 +32,22 @@ public class DB {
            }
        }
    }
+
+   public static void closeStatement(Statement statement) {
+       try {
+           statement.close();
+       } catch (SQLException e) {
+           throw new DbException("Erro ao fechar Statement " + statement + ". Caused by: " + e.getMessage());
+       }
+   }
+
+    public static void closeResultSet(ResultSet resultSet) {
+        try {
+            resultSet.close();
+        } catch (SQLException e) {
+            throw new DbException("Erro ao fechar ResultSet " + resultSet + ". Caused by: " + e.getMessage());
+        }
+    }
 
    private static Properties loadProperties(){
        try (FileInputStream fr = new FileInputStream("db.properties")){
