@@ -16,13 +16,13 @@ public class Seller implements Serializable {
     private Double baseSalary;
     private Department department;
 
-    public Seller(Integer id, String name, String email, LocalDateTime birthDate, Double baseSalary, Department department) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.baseSalary = baseSalary;
-        this.department = department;
+    private Seller(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.birthDate = builder.birthDate;
+        this.baseSalary = builder.baseSalary;
+        this.department = builder.department;
     }
 
     public Integer getId() {
@@ -96,5 +96,48 @@ public class Seller implements Serializable {
                 ", baseSalary=" + baseSalary +
                 ", department=" + department +
                 '}';
+    }
+
+    public static class Builder{
+        private Integer id;
+        private String name;
+        private String email;
+        private LocalDateTime birthDate;
+        private Double baseSalary;
+        private Department department;
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder birthDate(LocalDateTime birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public Builder baseSalary(Double baseSalary) {
+            this.baseSalary = baseSalary;
+            return this;
+        }
+
+        public Builder department(Department department) {
+            this.department = department;
+            return this;
+        }
+
+        public Seller build() {
+            return new Seller(this);
+        }
     }
 }
