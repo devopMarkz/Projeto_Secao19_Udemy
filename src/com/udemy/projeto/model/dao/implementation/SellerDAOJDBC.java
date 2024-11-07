@@ -84,9 +84,8 @@ public class SellerDAOJDBC implements SellerDAO {
     }
 
     @Override
-    public List<Seller> findByDepartment(Department department) {
+    public List<Seller> findByDepartment(int id) {
         ResultSet rs = null;
-        List<Seller> sellers = new ArrayList<>();
 
         try (PreparedStatement selectStmt = connection.prepareStatement(
                 "SELECT seller.*, department.Name AS DepName " +
@@ -97,18 +96,20 @@ public class SellerDAOJDBC implements SellerDAO {
                         "ORDER BY seller.Name"
         )
         ){
-
-            selectStmt.setInt(1, department.getId());
+            List<Seller> sellers = new ArrayList<>();
+            selectStmt.setInt(1, id);
             rs =  selectStmt.executeQuery();
 
+            Department dep = null;
             while (rs.next()) {
-                sellers.add(instantiateSeller(rs, department));
+                if(dep == null) dep = instantiateDepartment(rs);
+                sellers.add(instantiateSeller(rs, dep));
             }
 
             return sellers;
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao tentar acessar dados do deparmento de ID " + department.getId() + ". Caused By: Usuário inexistente ou " + e.getMessage());
+            throw new DbException("Erro ao tentar acessar dados do deparmento de ID " + id + ". Caused By: Usuário inexistente ou " + e.getMessage());
         } finally {
             DB.closeResultSet(rs);
         }
