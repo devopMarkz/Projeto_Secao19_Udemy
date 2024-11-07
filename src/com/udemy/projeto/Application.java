@@ -50,6 +50,14 @@ public class Application {
 
             sellerDAO.insert(seller1);
 
+            System.out.println("\n----------- Teste Update -----------");
+            Seller seller2 = sellerDAO.findById(13);
+            seller2.setName("Marcos André");
+            seller2.setEmail("marcos@gmail.com");
+            seller2.setBirthDate(LocalDateTime.parse("25/09/2002 14:35:23", fmt));
+            sellerDAO.update(seller2);
+            System.out.println("Update complete!");
+
         } catch (DbException e) {
             System.out.println(e.getMessage());
         }

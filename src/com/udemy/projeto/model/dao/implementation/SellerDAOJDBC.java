@@ -53,7 +53,23 @@ public class SellerDAOJDBC implements SellerDAO {
 
     @Override
     public void update(Seller seller) {
+        try (PreparedStatement updateStmt = connection.prepareStatement(
+                "UPDATE seller " +
+                        "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " +
+                        "WHERE Id = ?"
+        )){
 
+            updateStmt.setString(1, seller.getName());
+            updateStmt.setString(2, seller.getEmail());
+            updateStmt.setTimestamp(3, Timestamp.valueOf(seller.getBirthDate()));
+            updateStmt.setDouble(4, seller.getBaseSalary());
+            updateStmt.setInt(5, seller.getDepartment().getId());
+            updateStmt.setInt(6, seller.getId());
+            updateStmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException("Erro no update do funcionário de ID " + seller.getId() + ". Caused by: " + e.getMessage());
+        }
     }
 
     @Override
