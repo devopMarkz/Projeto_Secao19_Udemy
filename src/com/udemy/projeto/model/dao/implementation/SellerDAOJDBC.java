@@ -7,6 +7,7 @@ import com.udemy.projeto.model.entities.Seller;
 import com.udemy.projeto.util.DB;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SellerDAOJDBC implements SellerDAO {
@@ -80,5 +81,36 @@ public class SellerDAOJDBC implements SellerDAO {
     @Override
     public List<Seller> findAll() {
         return List.of();
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        ResultSet rs = null;
+        List<Seller> sellers = new ArrayList<>();
+
+        try (PreparedStatement selectStmt = connection.prepareStatement(
+                "SELECT seller.*, department.Name AS DepName " +
+                        "FROM seller " +
+                        "INNER JOIN department " +
+                        "ON seller.DepartmentId = department.Id " +
+                        "WHERE seller.DepartmentId = ? " +
+                        "ORDER BY seller.Name"
+        )
+        ){
+
+            selectStmt.setInt(1, department.getId());
+            rs =  selectStmt.executeQuery();
+
+            while (rs.next()) {
+                sellers.add(instantiateSeller(rs, department));
+            }
+
+            return sellers;
+
+        } catch (SQLException e) {
+            throw new DbException("Erro ao tentar acessar dados do deparmento de ID " + department.getId() + ". Caused By: Usuário inexistente ou " + e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+        }
     }
 }
