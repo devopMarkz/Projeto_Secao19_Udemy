@@ -53,14 +53,13 @@ public class SellerDAOJDBC implements SellerDAO {
                 return instantiateSeller(rs, department);
             } else throw new SQLException();
         } catch (SQLException e) {
-            throw new DbException("Erro ao tentar acessar dados do usuário de ID " + id + ". Caused By: Usuário inexistente.");
+            throw new DbException("Erro ao tentar acessar dados do usuário de ID " + id + ". Caused By: Usuário inexistente ou " + e.getMessage());
         } finally {
             DB.closeResultSet(rs);
         }
     }
 
-    private Seller instantiateSeller(ResultSet rs, Department department) {
-        try {
+    private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException{
             return new Seller.Builder()
                     .id(rs.getInt("seller.Id"))
                     .name(rs.getString("seller.Name"))
@@ -69,20 +68,13 @@ public class SellerDAOJDBC implements SellerDAO {
                     .baseSalary(rs.getDouble("seller.BaseSalary"))
                     .department(department)
                     .build();
-        } catch (SQLException e) {
-            throw new DbException("Erro ao criar Seller. Caused by: " + e.getMessage());
-        }
     }
 
-    private Department instantiateDepartment(ResultSet rs) {
-        try {
+    private Department instantiateDepartment(ResultSet rs) throws SQLException{
             Department department = new Department();
             department.setId(rs.getInt("seller.DepartmentId"));
             department.setName(rs.getString("DepName"));
             return department;
-        } catch (SQLException e) {
-            throw new DbException("ResultSet vazio. Caused by: " + e.getMessage());
-        }
     }
 
     @Override
