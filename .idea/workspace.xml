@@ -7,7 +7,7 @@
     <list default="true" id="6336069c-476c-454e-84cf-eb2e1ae5fe55" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/udemy/projeto/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/udemy/projeto/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/udemy/projeto/model/dao/implementation/SellerDAOJDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/udemy/projeto/model/dao/implementation/SellerDAOJDBC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/udemy/projeto/model/dao/DAOFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/udemy/projeto/model/dao/DAOFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

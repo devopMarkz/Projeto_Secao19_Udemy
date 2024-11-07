@@ -17,6 +17,20 @@ public class Application {
 
     public static void main(String[] args) {
 
+        // testSellerDAO();
+
+
+
+    }
+
+    public static void testDepartmentDAO() {
+
+        System.out.println("------------ Test Insert ------------");
+
+
+    }
+
+    public static void testSellerDAO() {
         try {
             System.out.println("----------- Teste FindById -----------");
 
@@ -64,6 +78,5 @@ public class Application {
         } catch (DbException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }
