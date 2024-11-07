@@ -8,7 +8,9 @@ import com.udemy.projeto.util.DB;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDAOJDBC implements SellerDAO {
 
@@ -80,7 +82,34 @@ public class SellerDAOJDBC implements SellerDAO {
 
     @Override
     public List<Seller> findAll() {
-        return List.of();
+
+        ResultSet rs = null;
+
+        try (PreparedStatement selectStmt = connection.prepareStatement(
+                "SELECT seller.*, department.Name as DepName " +
+                        "FROM seller " +
+                        "INNER JOIN department " +
+                        "ON seller.DepartmentId = department.Id"
+        )){
+
+            List<Seller> sellers = new ArrayList<>();
+            Map<Integer, Department> departmentMaps = new HashMap<>();
+            rs = selectStmt.executeQuery();
+
+            while (rs.next()){
+                departmentMaps.put(rs.getInt("seller.DepartmentId"), instantiateDepartment(rs));
+                Department department = departmentMaps.get(rs.getInt("seller.DepartmentId"));
+                Seller seller = instantiateSeller(rs, department);
+                sellers.add(seller);
+            }
+
+            return sellers;
+
+        } catch (SQLException e) {
+            DB.closeResultSet(rs);
+            throw new DbException("Erro na busca de funcionários. Caused By: " + e.getMessage());
+        }
+
     }
 
     @Override

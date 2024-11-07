@@ -34,18 +34,22 @@ public class DB {
    }
 
    public static void closeStatement(Statement statement) {
-       try {
-           statement.close();
-       } catch (SQLException e) {
-           throw new DbException("Erro ao fechar Statement " + statement + ". Caused by: " + e.getMessage());
+       if(statement != null) {
+           try {
+               statement.close();
+           } catch (SQLException e) {
+               throw new DbException("Erro ao fechar Statement " + statement + ". Caused by: " + e.getMessage());
+           }
        }
    }
 
     public static void closeResultSet(ResultSet resultSet) {
-        try {
-            resultSet.close();
-        } catch (SQLException e) {
-            throw new DbException("Erro ao fechar ResultSet " + resultSet + ". Caused by: " + e.getMessage());
+        if(resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                throw new DbException("Erro ao fechar ResultSet " + resultSet + ". Caused by: " + e.getMessage());
+            }
         }
     }
 
