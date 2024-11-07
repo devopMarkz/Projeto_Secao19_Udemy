@@ -49,20 +49,39 @@ public class SellerDAOJDBC implements SellerDAO {
             rs = selectStmt.executeQuery();
 
             if(rs.next()) {
-                Department department = new Department(rs.getInt("seller.DepartmentId"), rs.getString("DepName"));
-                return new Seller.Builder()
-                        .id(rs.getInt("seller.Id"))
-                        .name(rs.getString("seller.Name"))
-                        .email(rs.getString("seller.Email"))
-                        .birthDate(rs.getTimestamp("seller.BirthDate").toLocalDateTime())
-                        .baseSalary(rs.getDouble("seller.BaseSalary"))
-                        .department(department)
-                        .build();
+                Department department = instantiateDepartment(rs);
+                return instantiateSeller(rs, department);
             } else throw new SQLException();
         } catch (SQLException e) {
             throw new DbException("Erro ao tentar acessar dados do usuário de ID " + id + ". Caused By: Usuário inexistente.");
         } finally {
             DB.closeResultSet(rs);
+        }
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department department) {
+        try {
+            return new Seller.Builder()
+                    .id(rs.getInt("seller.Id"))
+                    .name(rs.getString("seller.Name"))
+                    .email(rs.getString("seller.Email"))
+                    .birthDate(rs.getTimestamp("seller.BirthDate").toLocalDateTime())
+                    .baseSalary(rs.getDouble("seller.BaseSalary"))
+                    .department(department)
+                    .build();
+        } catch (SQLException e) {
+            throw new DbException("Erro ao criar Seller. Caused by: " + e.getMessage());
+        }
+    }
+
+    private Department instantiateDepartment(ResultSet rs) {
+        try {
+            Department department = new Department();
+            department.setId(rs.getInt("seller.DepartmentId"));
+            department.setName(rs.getString("DepName"));
+            return department;
+        } catch (SQLException e) {
+            throw new DbException("ResultSet vazio. Caused by: " + e.getMessage());
         }
     }
 
