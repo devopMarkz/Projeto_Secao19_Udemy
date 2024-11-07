@@ -3,12 +3,18 @@ package com.udemy.projeto;
 import com.udemy.projeto.exception.DbException;
 import com.udemy.projeto.model.dao.DAOFactory;
 import com.udemy.projeto.model.dao.SellerDAO;
+import com.udemy.projeto.model.entities.Department;
 import com.udemy.projeto.model.entities.Seller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
 public class Application {
+
+    private static final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
     public static void main(String[] args) {
 
         try {
@@ -31,6 +37,18 @@ public class Application {
 
             List<Seller> sellers1 = sellerDAO.findAll();
             sellers1.forEach(System.out::println);
+
+            System.out.println("\n----------- Teste Insert -----------");
+
+            Seller seller1 = new Seller.Builder()
+                    .name("Vitor Nascimento")
+                    .email("vitor@gmail.com")
+                    .birthDate(LocalDateTime.parse("04/12/2003 12:35:47", fmt))
+                    .baseSalary(2500.43)
+                    .department(new Department(2, null))
+                    .build();
+
+            sellerDAO.insert(seller1);
 
         } catch (DbException e) {
             System.out.println(e.getMessage());

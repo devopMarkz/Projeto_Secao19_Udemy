@@ -22,7 +22,33 @@ public class SellerDAOJDBC implements SellerDAO {
 
     @Override
     public void insert(Seller seller) {
+        try (PreparedStatement insertStmt = connection.prepareStatement(
+                "INSERT INTO seller " +
+                        "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                        "VALUES " +
+                        "(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
+        )){
 
+            insertStmt.setString(1, seller.getName());
+            insertStmt.setString(2, seller.getEmail());
+            insertStmt.setTimestamp(3, Timestamp.valueOf(seller.getBirthDate()));
+            insertStmt.setDouble(4, seller.getBaseSalary());
+            insertStmt.setInt(5, seller.getDepartment().getId());
+
+            int rowsAffected = insertStmt.executeUpdate();
+
+            if(rowsAffected > 0) {
+                ResultSet rs = insertStmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int id = rs.getInt(1);
+                    seller.setId(id);
+                    System.out.println("Usuário de ID " + id + " inserido no banco de dados.");
+                }
+            } else throw new DbException("Erro inesperado. Nenhuma linha foi afetada.");
+
+        } catch (SQLException e) {
+            throw new DbException("Erro ao inserir os dados do funcionário " + seller + "; Caused By: " + e.getMessage());
+        }
     }
 
     @Override
