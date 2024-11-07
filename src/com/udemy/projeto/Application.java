@@ -28,6 +28,7 @@ public class Application {
             sellers.forEach(System.out::println);
 
             System.out.println("\n----------- Teste FindAll -----------");
+
             List<Seller> sellers1 = sellerDAO.findAll();
             sellers1.forEach(System.out::println);
 

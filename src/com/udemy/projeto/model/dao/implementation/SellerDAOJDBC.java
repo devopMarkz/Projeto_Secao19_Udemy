@@ -89,7 +89,8 @@ public class SellerDAOJDBC implements SellerDAO {
                 "SELECT seller.*, department.Name as DepName " +
                         "FROM seller " +
                         "INNER JOIN department " +
-                        "ON seller.DepartmentId = department.Id"
+                        "ON seller.DepartmentId = department.Id " +
+                        "ORDER BY seller.Name"
         )){
 
             List<Seller> sellers = new ArrayList<>();
@@ -97,8 +98,13 @@ public class SellerDAOJDBC implements SellerDAO {
             rs = selectStmt.executeQuery();
 
             while (rs.next()){
-                departmentMaps.put(rs.getInt("seller.DepartmentId"), instantiateDepartment(rs));
                 Department department = departmentMaps.get(rs.getInt("seller.DepartmentId"));
+
+                if(department == null) {
+                    department = instantiateDepartment(rs);
+                    departmentMaps.put(rs.getInt("seller.DepartmentId"), department);
+                }
+
                 Seller seller = instantiateSeller(rs, department);
                 sellers.add(seller);
             }

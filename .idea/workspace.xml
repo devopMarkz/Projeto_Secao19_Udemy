@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/udemy/projeto/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/udemy/projeto/Application.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/udemy/projeto/model/dao/implementation/SellerDAOJDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/udemy/projeto/model/dao/implementation/SellerDAOJDBC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/udemy/projeto/util/DB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/udemy/projeto/util/DB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,5 +64,16 @@
       <updated>1730831736918</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
