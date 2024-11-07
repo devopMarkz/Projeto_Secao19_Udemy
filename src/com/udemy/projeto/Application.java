@@ -2,6 +2,7 @@ package com.udemy.projeto;
 
 import com.udemy.projeto.exception.DbException;
 import com.udemy.projeto.model.dao.DAOFactory;
+import com.udemy.projeto.model.dao.DepartmentDAO;
 import com.udemy.projeto.model.dao.SellerDAO;
 import com.udemy.projeto.model.entities.Department;
 import com.udemy.projeto.model.entities.Seller;
@@ -19,14 +20,41 @@ public class Application {
 
         // testSellerDAO();
 
+        testDepartmentDAO();
 
 
     }
 
     public static void testDepartmentDAO() {
 
-        System.out.println("------------ Test Insert ------------");
+        DepartmentDAO departmentDAO = DAOFactory.createDepartmentDAO();
 
+        System.out.println("------------ Insert ------------");
+        Department department = new Department(null, "Contratos");
+        departmentDAO.insert(department);
+
+        char resposta = new Scanner(System.in).next().charAt(0);
+
+        System.out.println("\n------------ DeleteById ------------");
+        departmentDAO.deleteById(department.getId());
+
+        resposta = new Scanner(System.in).next().charAt(0);
+
+        System.out.println("\n------------ FindById ------------");
+        Department department1 = departmentDAO.findById(2);
+        System.out.println(department1);
+
+        resposta = new Scanner(System.in).next().charAt(0);
+
+        System.out.println("\n------------ Update ------------");
+        department1.setName("Nada a ver");
+        departmentDAO.update(department1);
+
+        resposta = new Scanner(System.in).next().charAt(0);
+
+        System.out.println("\n------------ FindAll ------------");
+        List<Department> departmentList = departmentDAO.findAll();
+        departmentList.forEach(System.out::println);
 
     }
 

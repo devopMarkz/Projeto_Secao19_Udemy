@@ -3,12 +3,13 @@ package com.udemy.projeto.model.dao.implementation;
 import com.udemy.projeto.exception.DbException;
 import com.udemy.projeto.model.dao.DepartmentDAO;
 import com.udemy.projeto.model.entities.Department;
+import com.udemy.projeto.util.DB;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentDAOJDBC implements DepartmentDAO {
-
 
     private Connection connection;
 
@@ -37,7 +38,7 @@ public class DepartmentDAOJDBC implements DepartmentDAO {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao inserir departamento " + department + ". Caused by: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -75,11 +76,47 @@ public class DepartmentDAOJDBC implements DepartmentDAO {
 
     @Override
     public Department findById(int id) {
-        return null;
+        ResultSet rs = null;
+        try (PreparedStatement selectStmt = connection.prepareStatement(
+                "SELECT * FROM department " +
+                        "WHERE Id = ?"
+        )){
+
+            selectStmt.setInt(1, id);
+            rs = selectStmt.executeQuery();
+
+            if(rs.next()) {
+                return new Department(rs.getInt("Id"), rs.getString("Name"));
+            } else throw new DbException("Departamento não encontrado.");
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+        }
     }
 
     @Override
     public List<Department> findAll() {
-        return List.of();
+        ResultSet rs = null;
+        try (PreparedStatement selectStmt = connection.prepareStatement(
+                "SELECT * FROM department"
+        )){
+            List<Department> departmentList = new ArrayList<>();
+            rs = selectStmt.executeQuery();
+
+            while (rs.next()) {
+                departmentList.add(
+                        new Department(rs.getInt("Id"), rs.getString("Name"))
+                );
+            }
+
+            return departmentList;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+        }
     }
 }
