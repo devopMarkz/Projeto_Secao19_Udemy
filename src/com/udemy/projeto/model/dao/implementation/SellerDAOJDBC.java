@@ -74,7 +74,17 @@ public class SellerDAOJDBC implements SellerDAO {
 
     @Override
     public void deleteById(int id) {
+        try (PreparedStatement deleteStmt = connection.prepareStatement(
+                "DELETE FROM seller " +
+                        "WHERE Id = ?"
+        )){
 
+            deleteStmt.setInt(1, id);
+            deleteStmt.executeUpdate();
+
+        }catch (SQLException e) {
+            throw new DbException("Erro ao deletar usuário de ID " + id + ". Caused by: " + e.getMessage());
+        }
     }
 
     @Override

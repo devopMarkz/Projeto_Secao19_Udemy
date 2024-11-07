@@ -58,6 +58,9 @@ public class Application {
             sellerDAO.update(seller2);
             System.out.println("Update complete!");
 
+            System.out.println("\n----------- Teste Delete -----------");
+            sellerDAO.deleteById(13);
+
         } catch (DbException e) {
             System.out.println(e.getMessage());
         }
